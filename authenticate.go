@@ -35,7 +35,7 @@ func main() {
 	go http.ListenAndServe(":8080", nil)
 
 	url := auth.AuthURL(state)
-	fmt.Println("Please log in to Spotify by visiting the following page in your browser:", url)
+	fmt.Println("log in to Spotify your browser:", url)
 
 	// wait for auth to complete
 	client := <-ch
@@ -45,10 +45,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var newSong = spotify.ID("6ttsH99vfvkAPF3s1tIPqB")
+//https://open.spotify.com/track/
+	search, err := client.Search("queen", spotify.SearchTypeTrack)
+	fmt.Print(search)
+	var newSong = spotify.ID("68FhagAoZr9Ld8oCp9JoYP")
 	fmt.Println("You are logged in as:", user.ID)
 	tracks, err := client.GetPlaylistTracks("5oMgA72pUi1qtyqSZ0KVKX")
+	playlist, err := client.GetPlaylist("5oMgA72pUi1qtyqSZ0KVKX")
 	fmt.Print(tracks)
+	fmt.Print(playlist)
 	addPlaylist := true
 	for _, track := range tracks.Tracks {
 		if track.Track.SimpleTrack.ID == newSong {
